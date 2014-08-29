@@ -76,6 +76,7 @@ extern int gRows, gCols;
 extern void selector(unsigned char *, float *, float *, float*);
 extern void shareGrid(void *, int, MPI_Datatype);
 extern char *initGridMaps(char *, int, int);
+extern void readProbmap(float **, int, int, char *, int);
 extern void LUCconfigGrids(int, int, int *);
 extern void LUCinitGrids();
 extern void LUCrun();

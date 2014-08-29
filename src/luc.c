@@ -808,19 +808,16 @@ void LUCinitGrids()
     
     // reads the probabilty map if one is specified
     // otherwise probability map will be set to 1.0
-    probmap_res = (float *)initGridMapNull(SMEgetFileName("PROBMAP_RES"),
-                           elements, sizeof (float));
-    if (probmap_res == NULL)  {
-        probmap_res = (float *)initGridMap(NULL, elements, sizeof (float));
-        setGridMapFloat(probmap_res, elements, 1.0);
-    }
+    probmap_res = (float *)initGridMap(NULL, elements, sizeof (float));
+    setGridMapFloat(probmap_res, elements, 1.0);
+    readProbmap(&probmap_res, elements, sizeof (float),
+                SMEgetFileName("PROBMAP_RES"), -1);
 
-    probmap_com = (float *)initGridMapNull(SMEgetFileName("PROBMAP_COM"),
-                           elements, sizeof (float));
-    if (probmap_com == NULL)  {
-        probmap_com = (float *)initGridMap(NULL, elements, sizeof (float));
-        setGridMapFloat(probmap_com, elements, 1.0);
-    }
+    probmap_com = (float *)initGridMap(NULL, elements, sizeof (float));
+    setGridMapFloat(probmap_com, elements, 1.0);
+    readProbmap(&probmap_com, elements, sizeof (float),
+                SMEgetFileName("PROBMAP_COM"), -1);
+
 
     probmap_os = (float *)initGridMapNull(SMEgetFileName("PROBMAP_OS"),
                            elements, sizeof (float));
@@ -1552,22 +1549,32 @@ void updateRandom(float *rand, int count, int itr)
 
 
 // readProbmap -- check to see if a new probmap is available
-// and loads it if necessary
-void readProbmap(float **p, int count, int type, char *name, int time)
+// and loads it if necessary. If 'year' is 0 or -1 then it is ignored.
+//
+// Note: kind of hack! Probably should use access() instead of the open
+void readProbmap(float **p, int count, int type, char *name, int year)
 {
-  FILE *f;
-  char *ptr, fname[256], pname[256];
+    FILE *f;
+    char *ptr, fname[256], pname[256];
 
-  strcpy(pname, name);
-  ptr = strchr(pname, '.');
-  *ptr = '\0';
-  sprintf(fname, "%s_%d.%s", pname, time, ptr+1);
-  if ((f = fopen(fname, "r")) != NULL)  {
-    fprintf(stderr, "Reading %s\n", fname);
-    fclose(f);
-    freeGridMap((char *)*p, type);
-    *p = (float *)initGridMap(fname, count, type);
-  }
+    if (year > 0)  {
+        strcpy(pname, name);
+        ptr = strchr(pname, '.');
+        *ptr = '\0';
+        sprintf(fname, "%s_%d.%s", pname, year, ptr+1);
+    }
+
+    else {
+        strcpy(fname, name);
+    }
+
+    if ((f = fopen(fname, "r")) != NULL)  {
+        fclose(f);
+        freeGridMap((char *)*p, type);
+
+        fprintf(stderr, "Reading %s\n", fname);
+        *p = (float *)initGridMap(fname, count, type);
+    }
 }
 
 /* Run the LUC Model - 
