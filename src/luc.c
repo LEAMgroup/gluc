@@ -87,7 +87,7 @@ static float *ranvals;
 static float *resprob, *comprob, *osprob;
 static float desired_res = 0.0, desired_com = 0.0, desired_os = 0.0;
 static float current_res = 0.0, current_com = 0.0, current_os = 0.0;
-static float delta_res = 100.0, delta_com = 50.0, delta_os = 500.0;
+static float delta_res = 20.0, delta_com = 5.0, delta_os = 500.0;
 static float best_prob_res = 0.25, best_prob_com = 0.5, best_prob_os = 0.25;
 static float k_min_res, k_min_com, k_min_os;
 
@@ -1116,7 +1116,7 @@ float seekMinWeight(float demand, float best, float *probmap, float *density)
             olddev = dev;
 
        // failed to find a bracketing weight
-       if (count++ == 8)
+       if (count++ == 10)
            return 0.0;
 
     }  while (dev > 0.0 && dev > demand);
@@ -1137,6 +1137,8 @@ float seekMaxWeight(float demand, float best, float *probmap, float *density)
         w *= 10.0;
         dev = SPATIALfalseDev2(w, best, probmap, density, ranvals, elements);
         if (debug && myrank == 0)
+            fprintf(stderr, "seekMaxWeight: probmap sum = %f\n", 
+                    spatialSumF(probmap, elements));
             fprintf(stderr, "seekMaxWeight: w = %f, dev = %f\n", w, dev);
 
         if (dev == olddev)  {
@@ -1147,7 +1149,7 @@ float seekMaxWeight(float demand, float best, float *probmap, float *density)
         else
             olddev = dev;
 
-    }  while (count++ < 8 && dev < demand);
+    }  while (count++ < 10 && dev < demand);
 
     // failed to find a bracketing weight
     if (count >= 8)
