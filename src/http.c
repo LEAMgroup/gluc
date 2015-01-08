@@ -589,7 +589,7 @@ HTTP_Response http_request( char *in_URL, HTTP_Extra *in_Extra, HTTP_Method in_M
     /* Found, print up to delimiter to stderr and rest to stdout */
     debug( stderr, "----- HTTP reply header follows -----\n" );
     debug( stderr, "----- HTTP reply header end -----\n" );
-    debug( stderr, "Header size: %d\n", header_size );
+    debug( stderr, "Header size: %lu\n", header_size );
 
     if( in_Method == kHMethodHead )
     {

@@ -1559,7 +1559,7 @@ void readProbmap(float **p, int count, int type, char *name, int year)
 
     if (year > 0)  {
         strcpy(pname, name);
-        ptr = strchr(pname, '.');
+        ptr = strrchr(pname, '.');
         *ptr = '\0';
         sprintf(fname, "%s_%d.%s", pname, year, ptr+1);
     }
@@ -1568,6 +1568,7 @@ void readProbmap(float **p, int count, int type, char *name, int year)
         strcpy(fname, name);
     }
 
+    fprintf(stderr, "Looking for probmap %s\n", fname);
     if ((f = fopen(fname, "r")) != NULL)  {
         fclose(f);
         freeGridMap((char *)*p, type);

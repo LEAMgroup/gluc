@@ -17,8 +17,7 @@
 #include "leam.h"
 #include "bil.h"
 
-static char *ID = "$Id: leam.c 376 2011-01-10 16:43:30Z jefft $";
-static char *SVN = "$HeadURL: http://plone.leamgroup.com/svn/desktop/gluc/branches/nocompete/leam.c $";
+static char *TAG = "v3.1.2";
 
 int debug = 0;
 int timing = 0;
@@ -151,7 +150,7 @@ void GLUCusage(char *prog)
    printf(" -t || --timing : turns on performance timing results\n");
    printf(" -h || --help   : display this information\n");
 
-   printf("\nversion info = %s from %s\n", ID, SVN);
+   printf("\nversion %s\n", TAG);
 }
 
 
@@ -219,8 +218,7 @@ void quickArgs(int argc, char *argv[])
             exit(0);
         }
         else if (!strcmp(argv[i], "--version"))  {
-            printf("Repository = %s\n", SVN);
-            printf("Revision = %s\n", ID);
+            printf("version = %s\n", TAG);
             exit(0);
         }
     }

@@ -43,9 +43,9 @@ LIBS = $(MPILIB)  -lexpat -lm
 SRCS = leam.c utilities.c luc.c SME.c bil.c spatial.c graph.c score.c GA.c http.c
 OBJS = leam.o utilities.o luc.o SME.o bil.o spatial.o graph.o score.o GA.o http.o
 
-
 gluc: $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
+	@echo gluc `./gluc --version` should match repository tag `git describe`
 
 graph.o: graph.c graph.h
 
