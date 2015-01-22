@@ -45,7 +45,7 @@ OBJS = leam.o utilities.o luc.o SME.o bil.o spatial.o graph.o score.o GA.o http.
 
 gluc: $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
-	@echo gluc `./gluc --version` should match repository tag `git describe`
+	@echo gluc `Built ./gluc --version`
 
 graph.o: graph.c graph.h
 
